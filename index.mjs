@@ -1,68 +1,97 @@
-// The initial numbers that must be verified.
-const n1 = 10;
-const n2 = 15;
-const n3 = 20;
-const n4 = 5;
+// ==========================
+// PART 1: Validating 4 Numbers
+// ==========================
 
-// Check one: add up to 50
-// This is a fairly simple operation using
-// arithmetic operators and a comparison.
-const isSum50 = n1 + n2 + n3 + n4 == 50;
+// Declaring 4 numbers
+let n1 = 11;
+let n2 = 13;
+let n3 = 12;
+let n4 = 14;
 
-// Check two: at least two odd numbers
-// Here, we use modulus to check if something is odd.
-// Since % 2 is 0 if even and 1 if odd, we can use
-// arithmetic to count the total number of odd numbers.
-const isTwoOdd = (n1 % 2) + (n2 % 2) + (n3 % 2) + (n4 % 2) >= 2;
+// Validation 1: Sum to 50
+let sum = n1 + n2 + n3 + n4;
+let isSum50 = sum === 50;
 
-// Check three: no number larger than 25
-// This time, we use the OR operator to check
-// if ANY of the numbers is larger than 25.
-const isUnder25 = n1 <= 25 && n2 <= 25 && n3 <= 25 && n4 <= 25;
-console.log(`It is ${isUnder25} the numbers are all under 25`)
+// Validation 2: At least 2 odd numbers
+let oddCount = 0;
+if (n1 % 2 !== 0) oddCount++;
+if (n2 % 2 !== 0) oddCount++;
+if (n3 % 2 !== 0) oddCount++;
+if (n4 % 2 !== 0) oddCount++;
+let has2Odds = oddCount >= 2;
 
-// Check four: all unique numbers
-// This is long, and there are more efficient
-// ways of handling it with other data structures
-// that we will review later.
-const isUnique =
-  n1 != n2 && n1 != n3 && n1 != n4 && n2 != n3 && n2 != n4 && n3 != n4;
+// Validation 3: No number over 25
+let allBelow25 = n1 <= 25 && n2 <= 25 && n3 <= 25 && n4 <= 25;
 
-// Here, we put the results into a single variable
-// for convenience. Note how we negate isOver25 using
-// the ! operator. We could also have tested for
-// "isUnder25" as an alternative.
-const isValid = isSum50 && isTwoOdd && isUnder25 && isUnique;
+// Validation 4: All unique
+let allUnique = (new Set([n1, n2, n3, n4])).size === 4;
 
-// Finally, log the results.
-console.log(isValid);
+// Final validation
+let isValid = isSum50 && has2Odds && allBelow25 && allUnique;
+console.log(`The four numbers are valid according to the provided criteria: ${isValid}`);
 
-// Here's another example of how this COULD be done,
-// but it SHOULD NOT be done this way. As programmers,
-// we break things into small, manageable pieces so that
-// they can be better understood, scaled, and maintained.
-// const dontDoThis = ((n1 + n2 + n3 + n4) == 50) &&
-//   ((n1 % 2) + (n2 % 2) + (n3 % 2) + (n4 % 2) >= 2) &&
-//   !(n1 > 25 || n2 > 25 || n3 > 25 || n4 > 25) &&
-//   (n1 != n2 && n1 != n3 && n1 != n4 && n2 != n3 && n2 != n4 && n3 != n4);
+// More checks
+let divisibleBy5 = n1 % 5 === 0 && n2 % 5 === 0 && n3 % 5 === 0 && n4 % 5 === 0;
+console.log(`All numbers divisible by 5? ${divisibleBy5}`);
 
-// Check if all numbers are divisible by 5. Cache the result in a variable.
-const isDiv5 = (n1 % 5) + (n2 % 5) + (n3 % 5) + (n4 % 5) == 0;
-// console.log(`${isDiv5}: all numbers are divisible by 5.`);
+let isFirstGreater = n1 > n4;
+console.log(`Is the first number greater than the last? ${isFirstGreater}`);
 
-// Check if the first number is larger than the last. Cache the result in a variable.
-const firstNumLgLast = n1 > n4;
-// console.log(`${firstNumLgLast}: first number is larger than the last.`);
+let chain = ((n2 - n1) * n3) % n4;
+console.log(`Result of the arithmetic chain is: ${chain}`);
 
-// Accomplish the following arithmetic chain:
-// // Subtract the first number from the second number.
-// // Multiply the result by the third number.
-// // Find the remainder of dividing the result by the fourth number.
-let num = n2 - n1;
-//  console.log(`${n2} - ${n1} = ${num}`)
-num *= n3;
-// console.log(`${n2 - n1} * ${n3} = ${num}`)
-num %= n4;
-// console.log(`${(n2 - n1) * n3} % ${n4} = ${num}`);
+// Change isOver25 logic without using !
+let isUnderOr25 = n1 <= 25 && n2 <= 25 && n3 <= 25 && n4 <= 25;
+console.log(`All numbers are 25 or less: ${isUnderOr25}`);
 
-// Change the way that isOver25 calculates so that we do not need to use the NOT operator (!) in other logic comparisons. Rename the variable as appropriate.
+
+// PART 2: Road Trip Simulation
+
+// Constants
+const totalDistance = 1500;
+const budget = 175;
+const costPerGallon = 3;
+
+// Simulation speeds
+const scenarios = [
+  { speed: 55, mpg: 30 },
+  { speed: 60, mpg: 28 },
+  { speed: 75, mpg: 23 }
+];
+
+scenarios.forEach(({ speed, mpg }) => {
+  const gallons = totalDistance / mpg;
+  const cost = gallons * costPerGallon;
+  const time = totalDistance / speed;
+  const affordable = cost <= budget;
+
+  console.log(`\n----- TRIP AT ${speed} MPH -----`);
+  console.log(`You will need ${gallons.toFixed(2)} gallons of fuel.`);
+  console.log(`It will cost $${cost.toFixed(2)} in fuel.`);
+  console.log(`Trip will take ${time.toFixed(2)} hours.`);
+  console.log(`Is your $${budget} budget enough? ${affordable}`);
+});
+
+
+// PART 3: Error Handling
+
+try {
+  const startPlants = 100;
+  const weeks = 10;
+  const plantSpace = 0.8;
+  const PI = 3.1415;
+  const radius = 5;
+  const gardenArea = PI * radius * radius;
+
+  const plantsAfter10Weeks = startPlants * 2 ** weeks;
+  const spaceNeeded = plantsAfter10Weeks * plantSpace;
+
+  if (spaceNeeded > gardenArea) {
+    throw new Error("Not enough space in the garden for all the plants after 10 weeks.");
+  }
+
+  console.log("Plants fit perfectly after 10 weeks.");
+
+} catch (error) {
+  console.log("ERROR:", error.message);
+}
